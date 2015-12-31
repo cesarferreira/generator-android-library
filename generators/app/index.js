@@ -87,12 +87,12 @@ module.exports = require('yeoman-generator').Base.extend({
   writing: {
     projectfiles: function () {
       this.copy('gitignore', '.gitignore');
-      this.copy('build.gradle', 'build.gradle');
       this.copy('gradle.properties', 'gradle.properties');
       this.copy('gradlew', 'gradlew');
       this.copy('gradlew.bat', 'gradlew.bat');
       this.copy('deploy.gradle', 'deploy.gradle');
       this.copy('settings.gradle', 'settings.gradle');
+      this.template('_build.gradle', 'build.gradle');
       this.template('_README.md', 'README.md');
       this.directory('gradle', 'gradle');
     },

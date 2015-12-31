@@ -2,6 +2,10 @@
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Boilerplate code for creating an android library
 
+<p align="center">
+<img src="extras/screenshot.png" />
+</p>
+
 ## Installation
 
 First, install [Yeoman](http://yeoman.io) and generator-android-library using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).

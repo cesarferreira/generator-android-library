@@ -24,12 +24,12 @@ task clean(type: Delete) {
 // run the following to build and upload everything:
 // ./gradlew bintrayUpload
 
-group "com.superstuff" // Reverse URL unique group id. Edit me!
+group "<%= appPackage %>" // Reverse URL unique group id. Edit me!
 version "1.0.0" // The package version.
 
 ext {
-    pkgName = "helloworld" // Unique package name. I'm creative.
-    pkgDesc = "Hello world sample library"
+    pkgName = "<%= appPackage %>" // Unique package name. I'm creative.
+    pkgDesc = "# <%= appName %> library"
     githubRepo = "github.com/superstuff/helloworld"
     pkgLicense = "Apache-2.0"
     pkgLicenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
@@ -45,3 +45,6 @@ ext {
     mavenUserPass = System.getenv("MAVEN_USER_PASS")
     deployDryRun = false // Set to true to not deploy on run.
 }
+
+apply from: 'deploy.gradle'
+
