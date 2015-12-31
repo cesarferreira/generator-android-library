@@ -1,6 +1,6 @@
 {
   "name": "generator-android-library",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Boilerplate code for creating an android library",
   "homepage": "https://github.com/cesarferreira/generator-android-library",
   "author": {

@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 
+def ext = rootProject.ext
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -16,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+bintray {
+    user = ext.bintrayUser
+    key = ext.bintrayKey
 }
 
 dependencies {
