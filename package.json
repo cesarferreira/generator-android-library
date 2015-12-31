@@ -16,9 +16,9 @@
     "yeoman-generator"
   ],
   "dependencies": {
-    "yeoman-generator": "^0.21.1",
-    "chalk": "^1.0.0",
-    "yosay": "^1.0.2"
+    "yeoman-generator": "^0.22.2",
+    "chalk": "^1.1.1",
+    "yosay": "^1.1.0"
   },
   "devDependencies": {
     "yeoman-assert": "^2.0.0",
