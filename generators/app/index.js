@@ -109,6 +109,13 @@ module.exports = yeoman.generators.Base.extend({
       this.copy(libraryModuleName+'/proguard-rules.pro', libraryModuleName+'/proguard-rules.pro');
       this.template(libraryModuleName+'/_build.gradle', libraryModuleName+'/build.gradle');
 
+      mkdirp(libraryModuleName+'/src/main/assets');
+      mkdirp(libraryModuleName+'/src/main/java/' + packageDir);
+      this.directory(libraryModuleName+'/src/main/assets', libraryModuleName+'/src/main/assets');
+      this.template(libraryModuleName+'/src/main/_AndroidManifest.xml', libraryModuleName+'/src/main/AndroidManifest.xml');
+      this.templateDirectory(libraryModuleName+'/src/main/java', libraryModuleName+'/src/main/java/' + packageDir);
+      this.templateDirectory(libraryModuleName+'/src/main/res', libraryModuleName+'/src/main/res');
+
 
       // ######## SAMPLE PROJECT ########
       mkdirp(sampleModuleName);

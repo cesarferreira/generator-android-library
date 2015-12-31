@@ -1,4 +1,4 @@
-package com.example.library;
+package <%= appPackage %>;
 
 
 public class Library {
