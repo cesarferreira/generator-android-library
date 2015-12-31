@@ -7,6 +7,9 @@ To upload your library to bintray, learn from [here](https://medium.com/@ryansey
 ```bash
 export BINTRAY_USER="<something>"
 export BINTRAY_API_KEY="<something>"
+
+export MAVEN_USER_TOKEN="<something>"
+export MAVEN_USER_PASS="<something>"
 ```
 Add this to your `~/.bashrc` or `.zshrc`
 
