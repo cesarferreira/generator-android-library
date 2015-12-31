@@ -1,11 +1,11 @@
-package com.example.androidlibrarygenerator;
+package <%= appPackage %>.sample;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.library.Library;
+import <%= appPackage %>.Library;
 
 public class MainActivity extends AppCompatActivity {
 

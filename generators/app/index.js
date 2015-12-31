@@ -45,15 +45,15 @@ module.exports = yeoman.generators.Base.extend({
 
     var prompts = [{
       name: 'name',
-      message: 'What are you calling your app?',
+      message: 'What are you calling your library?',
       store: true,
       default: this.appname // Default to current folder name
     },
     {
       name: 'package',
-      message: 'What package will you be publishing the app under?',
+      message: 'What package will you be publishing the library under?',
       store: true,
-      default: 'com.example'
+      default: 'com.example.library'
     },
     {
       name: 'targetSdk',
@@ -81,6 +81,7 @@ module.exports = yeoman.generators.Base.extend({
   configuring: {
     saveSettings: function () {
       this.config.set('appPackage', this.appPackage);
+      this.config.set('appName', this.appName);
     }
   },
 
@@ -99,6 +100,7 @@ module.exports = yeoman.generators.Base.extend({
 
     app: function () {
       var packageDir = this.appPackage.replace(/\./g, '/');
+      var samplePackageDir = this.appPackage.concat('.sample').replace(/\./g, '/');
 
       var libraryModuleName = 'library';
       var sampleModuleName = 'sample';
@@ -110,12 +112,11 @@ module.exports = yeoman.generators.Base.extend({
       this.template(libraryModuleName+'/_build.gradle', libraryModuleName+'/build.gradle');
 
       mkdirp(libraryModuleName+'/src/main/assets');
-      mkdirp(libraryModuleName+'/src/main/java/' + packageDir);
+      mkdirp(libraryModuleName+'/src/main/java/' + samplePackageDir);
       this.directory(libraryModuleName+'/src/main/assets', libraryModuleName+'/src/main/assets');
       this.template(libraryModuleName+'/src/main/_AndroidManifest.xml', libraryModuleName+'/src/main/AndroidManifest.xml');
-      this.templateDirectory(libraryModuleName+'/src/main/java', libraryModuleName+'/src/main/java/' + packageDir);
+      this.templateDirectory(libraryModuleName+'/src/main/java', libraryModuleName+'/src/main/java/' + samplePackageDir);
       this.templateDirectory(libraryModuleName+'/src/main/res', libraryModuleName+'/src/main/res');
-
 
       // ######## SAMPLE PROJECT ########
       mkdirp(sampleModuleName);
@@ -123,27 +124,12 @@ module.exports = yeoman.generators.Base.extend({
       this.copy(sampleModuleName+'/proguard-rules.pro', sampleModuleName+'/proguard-rules.pro');
       this.template(sampleModuleName+'/_build.gradle', sampleModuleName+'/build.gradle');
 
-      // this.mkdir(sampleModuleName+'/src/androidTest/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/androidTest/java', sampleModuleName+'/src/androidTest/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/androidTest/res', sampleModuleName+'/src/androidTest/res');
-
-      // this.mkdir(sampleModuleName+'/src/env_prod/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/env_prod/java', sampleModuleName+'/src/env_prod/java/' + packageDir);
-
-      // this.mkdir(sampleModuleName+'/src/env_test/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/env_test/java', sampleModuleName+'/src/env_test/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/env_test/res', sampleModuleName+'/src/env_test/res');
-
-      // this.mkdir(sampleModuleName+'/src/main/assets');
-      // this.mkdir(sampleModuleName+'/src/main/java/' + packageDir);
-      // this.directory(sampleModuleName+'/src/main/assets', sampleModuleName+'/src/main/assets');
-      // this.template(sampleModuleName+'/src/main/_AndroidManifest.xml', sampleModuleName+'/src/main/AndroidManifest.xml');
-      // this.templateDirectory(sampleModuleName+'/src/main/java', sampleModuleName+'/src/main/java/' + packageDir);
-      // this.templateDirectory(sampleModuleName+'/src/main/res', sampleModuleName+'/src/main/res');
-
-      // this.mkdir(sampleModuleName+'/src/debug');
-      // this.template(sampleModuleName+'/src/debug/_AndroidManifest.xml', sampleModuleName+'/src/debug/AndroidManifest.xml');
+      mkdirp(sampleModuleName+'/src/main/assets');
+      mkdirp(sampleModuleName+'/src/main/java/' + samplePackageDir);
+      this.directory(sampleModuleName+'/src/main/assets', sampleModuleName+'/src/main/assets');
+      this.template(sampleModuleName+'/src/main/_AndroidManifest.xml', sampleModuleName+'/src/main/AndroidManifest.xml');
+      this.templateDirectory(sampleModuleName+'/src/main/java', sampleModuleName+'/src/main/java/' + samplePackageDir);
+      this.templateDirectory(sampleModuleName+'/src/main/res', sampleModuleName+'/src/main/res');
     }
-
   }
 });
