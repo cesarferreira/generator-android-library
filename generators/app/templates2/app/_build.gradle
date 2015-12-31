@@ -1,0 +1,124 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.stanfy.spoon:spoon-gradle-plugin:1.0.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+/*
+ * App compilation configuration
+ */
+
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion <%= androidMinSdkVersion %>
+        targetSdkVersion <%= androidTargetSdkVersion %>
+        multiDexEnabled true
+
+        testInstrumentationRunner "<%= appPackage %>.TestTestRunner"
+    }
+    productFlavors {
+        env_test {
+            applicationId '<%= appPackage %>.test'
+            versionCode 1
+            versionName "1.0.0"
+        }
+        env_prod {
+            applicationId '<%= appPackage %>'
+            versionCode 1
+            versionName "1.0.0"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+apply plugin: 'idea'
+idea {
+    module {
+        testOutputDir = file('build/test-classes/debug')
+    }
+}
+
+apply plugin: 'jacoco'
+jacoco {
+    toolVersion = '0.7.2.201409121644'
+}
+
+def coverageSourceDirs = [
+        'src/main/java'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: 'testEnv_prodDebug') {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports"
+
+    classDirectories = fileTree(
+            dir: 'build/intermediates/classes/env_prod/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*', // Ignore ButterKnife view injectors
+                       '**/*$InjectAdapter*',  // Ingore Dagger inject adapters
+                       '**/*$ModuleAdapter*',  // Ingore Dagger module adapters
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*']
+    )
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('build/jacoco/testEnv_prodDebug.exec')
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+/*
+ * App dependencies
+ */
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.0.+'
+    compile 'com.android.support:cardview-v7:23.0.+'
+    compile 'com.android.support:recyclerview-v7:23.0.+'
+    compile 'com.android.support:support-v4:23.0.+'
+}

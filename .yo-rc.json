@@ -1,0 +1,5 @@
+{
+  "generator-android-library": {
+    "appPackage": "com.example"
+  }
+}
