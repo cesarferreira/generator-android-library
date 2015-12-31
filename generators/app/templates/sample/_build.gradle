@@ -5,9 +5,8 @@ android {
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.example.androidlibrarygenerator"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion <%= androidMinSdkVersion %>
+        targetSdkVersion <%= androidTargetSdkVersion %>
         versionCode 1
         versionName "1.0"
     }
