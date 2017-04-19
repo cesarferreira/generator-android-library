@@ -1,6 +1,8 @@
 # generator-android-library
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Boilerplate code for creating an android library
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+
+---
 
 <p align="center">
 <img src="extras/screenshot.png" />
@@ -11,7 +13,22 @@
 First, install [Yeoman](http://yeoman.io) and generator-android-library using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
-npm install -g yo
+npm i -g yo
+```
+
+### For developers modifying `generator-android-library` itself
+
+Test new features on your workstation.
+
+```bash
+$ git clone https://github.com/gregswindle/generator-android-library.git
+$ cd generator-android-library
+$ npm link
+```
+
+### For general users
+
+```bash
 npm install -g generator-android-library
 ```
 

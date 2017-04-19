@@ -1,33 +1,75 @@
 apply plugin: 'com.android.library'
-
-def ext = rootProject.ext
+apply from: 'jacoco.gradle'
+apply plugin: 'project-report'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
-
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
     defaultConfig {
-        minSdkVersion <%= androidMinSdkVersion %>
-        targetSdkVersion <%= androidTargetSdkVersion %>
+        minSdkVersion 23
+        targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "0.1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
         }
     }
+    dexOptions {
+        // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+        // preDexLibraries = preDexEnabled && !travisBuild
+        preDexLibraries = false
+        jumboMode = false
+        javaMaxHeapSize "2048M"
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
-bintray {
-    user = ext.bintrayUser
-    key = ext.bintrayKey
-}
+group = 'com.verizon.api'
+description = 'Native Android extraction from com.cordova.plugins.cookiemaster.CookieMaster for reuse in native Android as well as Cordova.'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+
+
+    compile 'com.fasterxml.jackson.core:jackson-core:2.8.8'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.8'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+//    compile 'net.sf.proguard:proguard-gradle:5.3.3'
+    androidTestCompile('junit:junit:4.12') {
+        exclude module: 'hamcrest-core'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    // Mocks
+    compile 'org.powermock:powermock-core:1.6.6'
+    compile 'org.powermock:powermock-module-junit4:1.6.6'
+    compile 'org.powermock:powermock-api-mockito2:1.6.6'
+    compile 'org.powermock:powermock-classloading-xstream:1.6.6'
+    androidTestCompile 'org.mockito:mockito-android:2.7.22'
+//    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+//    androidTestCompile 'org.robolectric:robolectric:3.3.2'
 }
-
-
