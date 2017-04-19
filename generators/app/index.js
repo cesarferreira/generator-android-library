@@ -39,32 +39,38 @@ module.exports = require('yeoman-generator').Base.extend({
 
     // Have Yeoman greet the user.
     this.log(yosay(
-      'Welcome to the Android ' + chalk.green('Android Library') + ' generator!'
+      'Welcome to the VZ MSSO ' + chalk.green('Android Library') + ' generator!'
       ));
 
     var prompts = [{
-      name: 'name',
-      message: 'What are you calling your library?',
-      store: true,
+      type  : 'input',
+      name  : 'name',
+      type  : 'string',
+      message: 'What is the name of your app?',
+      store: false,
       default: this.appname // Default to current folder name
     },
     {
+      type : 'input',
       name: 'package',
-      message: 'What package will you be publishing the library under?',
-      store: true,
-      default: 'com.example.library'
+      type  : 'string',
+      message: 'What is application package name?',
+      store: false,
+      //default: 'com.verizon.api.android'
     },
     {
+      type : 'input',
       name: 'targetSdk',
       message: 'What Android SDK will you be targeting?',
-      store: true,
-      default: 23
+      store: false,
+      default: 25
     },
     {
+      type : 'input',
       name: 'minSdk',
       message: 'What is the minimum Android SDK you wish to support?',
-      store: true,
-      default: 16
+      store: false,
+      default: 23
     }];
 
     this.prompt(prompts, function (props) {
@@ -90,7 +96,9 @@ module.exports = require('yeoman-generator').Base.extend({
       this.copy('gradle.properties', 'gradle.properties');
       this.copy('gradlew', 'gradlew');
       this.copy('gradlew.bat', 'gradlew.bat');
-      this.copy('deploy.gradle', 'deploy.gradle');
+      this.copy('CHANGELOG.md','CHANGELOG.md');
+      this.copy('CONTRIBUTING.md','CONTRIBUTING.md');
+      this.copy('cookiemaster-android.iml','cookiemaster-android.iml');
       this.copy('settings.gradle', 'settings.gradle');
       this.template('_build.gradle', 'build.gradle');
       this.template('_README.md', 'README.md');
@@ -99,36 +107,29 @@ module.exports = require('yeoman-generator').Base.extend({
 
     app: function () {
       var packageDir = this.appPackage.replace(/\./g, '/');
-      var samplePackageDir = this.appPackage.concat('.sample').replace(/\./g, '/');
+      //var samplePackageDir = this.appPackage.concat('.sample').replace(/\./g, '/');
 
       var libraryModuleName = 'library';
-      var sampleModuleName = 'sample';
+      // TODO: required to replace library with this.appName
 
       // ######## LIBRARY PROJECT ########
       mkdirp(libraryModuleName);
       this.copy(libraryModuleName+'/gitignore', libraryModuleName+'/.gitignore');
       this.copy(libraryModuleName+'/proguard-rules.pro', libraryModuleName+'/proguard-rules.pro');
       this.template(libraryModuleName+'/_build.gradle', libraryModuleName+'/build.gradle');
+      this.template(libraryModuleName+'/_jacoco.gradle', libraryModuleName+'/jacoco.gradle');
 
       mkdirp(libraryModuleName+'/src/main/assets');
       mkdirp(libraryModuleName+'/src/main/java/' + packageDir);
+      mkdirp(libraryModuleName+'/src/test/' + packageDir);
+      mkdirp(libraryModuleName+'/src/androidTest/' + packageDir);
       this.directory(libraryModuleName+'/src/main/assets', libraryModuleName+'/src/main/assets');
       this.template(libraryModuleName+'/src/main/_AndroidManifest.xml', libraryModuleName+'/src/main/AndroidManifest.xml');
-      this.templateDirectory(libraryModuleName+'/src/main/java', libraryModuleName+'/src/main/java/' + packageDir);
+      this.templateDirectory(libraryModuleName+'/src/main/java', libraryModuleName+'/src/main/java/');
       this.templateDirectory(libraryModuleName+'/src/main/res', libraryModuleName+'/src/main/res');
+      this.templateDirectory(libraryModuleName+'/src/test', libraryModuleName+'/src/test/');
+      this.templateDirectory(libraryModuleName+'/src/androidTest', libraryModuleName+'/src/androidTest/');
 
-      // ######## SAMPLE PROJECT ########
-      mkdirp(sampleModuleName);
-      this.copy(sampleModuleName+'/gitignore', sampleModuleName+'/.gitignore');
-      this.copy(sampleModuleName+'/proguard-rules.pro', sampleModuleName+'/proguard-rules.pro');
-      this.template(sampleModuleName+'/_build.gradle', sampleModuleName+'/build.gradle');
-
-      mkdirp(sampleModuleName+'/src/main/assets');
-      mkdirp(sampleModuleName+'/src/main/java/' + samplePackageDir);
-      this.directory(sampleModuleName+'/src/main/assets', sampleModuleName+'/src/main/assets');
-      this.template(sampleModuleName+'/src/main/_AndroidManifest.xml', sampleModuleName+'/src/main/AndroidManifest.xml');
-      this.templateDirectory(sampleModuleName+'/src/main/java', sampleModuleName+'/src/main/java/' + samplePackageDir);
-      this.templateDirectory(sampleModuleName+'/src/main/res', sampleModuleName+'/src/main/res');
     }
   }
 });

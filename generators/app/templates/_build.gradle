@@ -1,15 +1,25 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
 buildscript {
     repositories {
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath 'net.sf.proguard:proguard-gradle:5.3.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.3'
+        classpath 'ru.vyarus:gradle-java-lib-plugin:1.0.4'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
 
-plugins {
-    id 'com.jfrog.bintray' version '1.4'
-}
+//apply plugin: 'com.github.kt3k.coveralls'
 
 allprojects {
     repositories {
@@ -17,36 +27,20 @@ allprojects {
     }
 }
 
+def coverageSourceDirs = [
+        "$projectDir/build/reports/jacoco/jacocoTestDebugUnitTestReport/jacocoTestDebugUnitTestReport.xml",
+        "$projectDir/build/reports/jacoco/jacocoTestReleaseUnitTestReport/jacocoTestReleaseUnitTestReport.xml"
+]
+
+//project.extensions.coveralls.sourceDirs += coverageSourceDirs
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// run the following to build and upload everything:
-// ./gradlew bintrayUpload
-
-group "<%= appPackage %>" // Reverse URL unique group id. Edit me!
-version "1.0.0" // The package version.
-
 ext {
-    pkgName = "<%= appPackage %>" // Unique package name. I'm creative.
-    pkgDesc = "# <%= appName %> library"
-    githubRepo = "github.com/superstuff/helloworld"
-    pkgLicense = "Apache-2.0"
-    pkgLicenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    devInfo = {
-        id "<%= appPackage %>"
-        name "Some guy"
-        url "https://github.com/superstuff"
-        email "someguy@superstuff.com"
-    }
-    mavenUserToken = System.getenv("MAVEN_USER_TOKEN")
-    mavenUserPass = System.getenv("MAVEN_USER_PASS")
+    travisBuild = System.getenv("TRAVIS") == "true"
+    // allows for -Dpre-dex=false to be set
+    preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
-    bintrayUser = System.getenv("BINTRAY_USER")
-    bintrayKey = System.getenv("BINTRAY_API_KEY")
-
-    deployDryRun = false // Set to true to not deploy on run.
 }
-
-apply from: 'deploy.gradle'
-

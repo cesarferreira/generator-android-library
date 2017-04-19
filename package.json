@@ -1,12 +1,13 @@
 {
   "name": "generator-android-library",
-  "version": "0.2.4",
-  "description": "Boilerplate code for creating an android library",
-  "homepage": "https://github.com/cesarferreira/generator-android-library",
+  "version": "0.1.0",
+  "description": "Boilerplate code for creating an verizon MSSO android library with automation framework",
+  "license": "MIT",
+  "homepage": "https://github.com/gregswindle/generator-android-library",
   "author": {
-    "name": "cesarferreira",
-    "email": "cesar.manuel.ferreira@gmail.com",
-    "url": "http://cesarferreira.com"
+    "name": "",
+    "email": "",
+    "url": ""
   },
   "files": [
     "generators"
@@ -30,7 +31,7 @@
     "gulp-nsp": "^2.1.0",
     "mocha": "*"
   },
-  "repository": "cesarferreira/generator-android-library",
+  "repository": "gregswindle/generator-android-library",
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
